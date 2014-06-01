@@ -76,6 +76,19 @@ describe "Authentication" do
    #         			end
     #      			end
         		end
+
+            describe "in the Microposts controller" do
+
+              describe "submitting to the create action" do
+                before { post microposts_path }
+                specify { expect(response).to redirect_to(signin_path) }
+              end
+
+              describe "submitting to the destroy action" do
+                before { delete micropost_path(FactoryGirl.create(:micropost)) }
+                specify { expect(response).to redirect_to(signin_path) }
+              end
+            end
       		end
 
       		describe "in the Users controller" do
@@ -126,9 +139,9 @@ describe "Authentication" do
       		end
     	end
 
-    	describe "as signed-in user" do
-      		let(:user) { FactoryGirl.create(:user) }
-      		before { sign_in user }
+    	#describe "as signed-in user" do
+      #		let(:user) { FactoryGirl.create(:user) }
+      #		before { sign_in user }
 
       		#describe "submitting a POST request to the Users#create action" do
         	#	before { post users_url }
@@ -136,10 +149,10 @@ describe "Authentication" do
         	#	specify { expect(response).to redirect_to(root_url) }
       		#end
 
-      		describe "submitting a GET request to the Users#new action" do
-        		before { visit new_user_path }
-        		it { should have_content('Sample App') }
-      		end
-    	end
+      		#describe "submitting a GET request to the Users#new action" do
+        	#	before { visit new_user_path }
+        	#	it { should have_content('Sample App') }
+      		#end
+    	#end
   	end
 end

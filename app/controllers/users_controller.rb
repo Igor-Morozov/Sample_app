@@ -2,7 +2,7 @@ class UsersController < ApplicationController
   before_action :signed_in_user, only: [:index, :edit, :update, :destroy]
   before_action :correct_user,   only: [:edit, :update]
   before_action :admin_user,     only: :destroy
-  before_action :unsigned_user,  only: [:new, :create]
+  #before_action :unsigned_user,  only: [:new, :create]
 
   def index
     @users = User.paginate(page: params[:page])
@@ -10,6 +10,7 @@ class UsersController < ApplicationController
 
   def show
   	@user = User.find(params[:id])
+    @microposts = @user.microposts.paginate(page: params[:page])
   end
 
   def new
@@ -51,11 +52,6 @@ class UsersController < ApplicationController
   		params.require(:user).permit(:name, :email, :password, :password_confirmation)	
     end
 
-    def signed_in_user
-      store_location
-      redirect_to signin_url, notice: "Please sign in." unless signed_in?
-    end  
-
     def correct_user
       @user = User.find(params[:id])
       redirect_to(root_url) unless current_user?(@user)
@@ -65,7 +61,7 @@ class UsersController < ApplicationController
       redirect_to(root_url) unless current_user.admin?
     end 
 
-    def unsigned_user
-      redirect_to(root_url) if signed_in?
-    end 
+    #def unsigned_user
+    #  redirect_to(root_url) if signed_in?
+    #end 
 end
